@@ -1,0 +1,24 @@
+services:
+  web:
+    build: ./webapp
+    ports:
+      - "5100:5000"
+    depends_on:
+      - db
+    environment:
+      FLASK_ENV: development
+      MYSQL_HOST: db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DB: myflaskapp
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: myflaskapp
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3390:3306"
